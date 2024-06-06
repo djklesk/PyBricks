@@ -1,0 +1,46 @@
+https://docs.pybricks.com/projects/pybricksdev/en/latest/api/ble/index.html#pybricksdev.ble.BLEConnection
+receive the data sent by the SPIKE Prime hub.
+import asyncio
+from bleak import BleakClient
+
+# Replace this with your SPIKE Prime hub's BLE address
+SPIKE_HUB_BLE_ADDRESS = 'XX:XX:XX:XX:XX:XX'
+
+# UUID for the UART service and characteristic
+UART_SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
+UART_RX_CHAR_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
+
+async def notification_handler(sender, data):
+    print(f'Received: {data.decode("utf-8")}')
+
+async def main():
+    async with BleakClient(SPIKE_HUB_BLE_ADDRESS) as client:
+        await client.start_notify(UART_RX_CHAR_UUID, notification_handler)
+        
+        print('Connected to SPIKE Prime hub, receiving data...')
+        
+        while True:
+            await asyncio.sleep(1)  # Keep the script running
+
+# Run the main event loop
+asyncio.run(main())
+
+ääääääääääääääääääääääääääääääääääääääääääääääääääääääää
+import pybricks.experimental
+from pybricks.hubs import PrimeHub
+
+hub = PrimeHub()
+
+ääääääääääääääääääääääääääääääääääääääääääääääääääääääää
+
+
+import pybricks.experimental
+
+# Initialize the hub
+hub = PrimeHub()
+
+# Start BLE communication
+pybricks.experimental.ble.start()
+
+pybricks.experimental.ble.send(data)
+address = pybricks.experimental.ble.get_address()
